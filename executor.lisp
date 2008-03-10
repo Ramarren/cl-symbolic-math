@@ -23,6 +23,9 @@
 (def symbolic-compile pi
   (constantly pi))
 
+(def symbolic-compile e
+  (constantly (exp 1)))
+
 ;;; basic arithmetic
 (defmacro define-unary-operator (symbolic-op real-op)
   "Define mapping from symbolic-op unary operator to real-op unary operator."
@@ -91,3 +94,8 @@
 
 (define-binary-operator ^ expt)
 (define-unary-operator exp exp)
+
+;;; failure
+
+(def symbolic-compile _
+  (error "Unknown symbolic math operation."))

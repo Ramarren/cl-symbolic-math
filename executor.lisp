@@ -5,6 +5,14 @@
 (def! symbolic-compile nil
   (constantly nil))
 
+;;; constants
+
+(def symbolic-compile pi
+  (constantly pi))
+
+(def symbolic-compile e
+  (constantly (exp 1)))
+
 ;;; terminals
 
 (def symbolic-compile _x
@@ -17,14 +25,6 @@
 (def symbolic-compile _n
   (where (numberp _n))
   (constantly _n))
-
-;;; constants
-
-(def symbolic-compile pi
-  (constantly pi))
-
-(def symbolic-compile e
-  (constantly (exp 1)))
 
 ;;; basic arithmetic
 (defmacro define-unary-operator (symbolic-op real-op)

@@ -1,4 +1,4 @@
-(in-package :symbolic)
+(in-package :cl-symbolic-math)
 
 ;;;; Execute symbolic math trees. Or even better, compile them to closures.
 

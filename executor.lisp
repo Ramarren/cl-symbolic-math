@@ -2,16 +2,24 @@
 
 ;;;; Execute symbolic math trees. Or even better, compile them to closures.
 
+;;; keep track of special symbols/operators
+(defparameter *constants* nil)
+(defparameter *variate-operators* nil)
+
 (def! symbolic-compile nil
   (constantly nil))
 
 ;;; constants
 
-(def symbolic-compile pi
-  (constantly pi))
+(defmacro define-symbolic-constant (symbolic-constant value)
+  `(progn
+     (push ',symbolic-constant *constants*)
+     (def symbolic-compile ,symbolic-constant
+       (constantly ,value))))
 
-(def symbolic-compile e
-  (constantly (exp 1)))
+(define-symbolic-constant pi pi)
+
+(define-symbolic-constant e (exp 1))
 
 ;;; terminals
 
@@ -48,13 +56,15 @@
 (defmacro define-variate-operator (symbolic-op real-op)
   "Define expander for multivariate operator to nested binary operators"
   (with-unique-names (b l r)
-    `(def symbolic-compile (,symbolic-op _a . _rest)
-       (where (> (length _rest) 1))
-       (let ((,l (symbolic-compile _a))
-	     (,r (symbolic-compile (cons ',symbolic-op _rest))))
-	 (lambda (,b)
-	   (,real-op (funcall ,l ,b)
-		     (funcall ,r ,b)))))))
+    `(progn
+       (push ',symbolic-op *variate-operators*)
+       (def symbolic-compile (,symbolic-op _a . _rest)
+	(where (> (length _rest) 1))
+	(let ((,l (symbolic-compile _a))
+	      (,r (symbolic-compile (cons ',symbolic-op _rest))))
+	  (lambda (,b)
+	    (,real-op (funcall ,l ,b)
+		      (funcall ,r ,b))))))))
 
 (define-unary-operator - -)
 

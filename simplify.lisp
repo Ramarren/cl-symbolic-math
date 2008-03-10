@@ -27,3 +27,38 @@
     ((_sym-op . _args)
      (cons _sym-op (mapcar #'fold-variates _args)))
     (_x _x)))
+
+(defun eliminate-trivial-operations (math-tree)
+  (match math-tree
+    ;;group identities
+    ((+ _x 0)
+     _x)
+    ((+ 0 _x)
+     _x)
+    ((- 0 _x)
+     (- _x))
+    ((- _x 0)
+     _x)
+    ((* 1 _x)
+     _x)
+    ((* _x 1)
+     _x)
+    ;;group zeroes
+    ((* _ 0)
+     0)
+    ((* 0 _)
+     0)
+    ((_sym-op . _args)
+     (cons _sym-op (mapcar #'eliminate-trivial-operations _args)))
+    (_x _x)))
+
+(defun perform-purely-numeric-expressions (math-tree)
+  (match math-tree
+    ((_sym-op . _args)
+     (let ((p-args (mapcar #'perform-purely-numeric-expressions _args)))
+       (if (every #'numberp p-args)
+	   (execute-expression (cons _sym-op p-args))
+	   (eliminate-trivial-operations (cons _sym-op p-args)))))
+    (_x (where (member _x *constants*))
+	(execute-expression _x))
+    (_x _x)))

@@ -16,7 +16,7 @@
   (where (symbolp _x))
   (if (eql *derivation-variable* _x)
       1
-      _x))
+      0))
 
 (def symbolic-derive (+ _a _b)
   (let ((a (symbolic-derive _a))

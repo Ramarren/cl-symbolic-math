@@ -76,3 +76,18 @@
 (def symbolic-derive (actg _a)
   (let ((a (symbolic-derive _a)))
     `(* (/ -1 (+ 1 (^ ,_a 2))) ,a)))
+
+(def symbolic-derive (^ _a _b)
+  (let ((a (symbolic-derive _a))
+	(b (symbolic-derive _b)))
+    `(* (^ ,_a ,_b)
+	(+ (* (log ,_a) ,b)
+	   (/ (* ,_b ,a) ,_a)))))
+
+(def symbolic-derive (log _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ 1 ,_a) ,a)))
+
+(def symbolic-derive (exp _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (exp ,_a) ,a)))

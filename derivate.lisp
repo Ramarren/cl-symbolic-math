@@ -44,3 +44,19 @@
     `(/ (+ (* ,a ,_b)
 	   (* ,_a ,b))
 	(^ ,_b 2))))
+
+(def symbolic-derive (sin _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (cos ,_a) ,a)))
+
+(def symbolic-derive (cos _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (- (sin ,_a)) ,a)))
+
+(def symbolic-derive (tan _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ 1 (^ (cos ,_a) 2)) ,a)))
+
+(def symbolic-derive (ctg _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ -1 (^ (sin ,_a) 2)) ,a)))

@@ -107,5 +107,5 @@
 
 ;;; failure
 
-(def symbolic-compile _
-  (error "Unknown symbolic math operation."))
+(def symbolic-compile _x
+  (error "Unknown symbolic math operation ~a" _x))

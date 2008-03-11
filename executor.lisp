@@ -104,6 +104,8 @@
 
 (define-binary-operator ^ expt)
 (define-unary-operator exp exp)
+(define-unary-operator sqrt sqrt)
+(define-unary-operator log log)
 
 ;;; failure
 

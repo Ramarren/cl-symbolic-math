@@ -8,3 +8,10 @@
 				 (plist-alist variable-bindings)
 				 variable-bindings)))
     (funcall (symbolic-compile math-expression) s-variable-bindings)))
+
+(defun diff (math-expression d-variable)
+  (let ((*derivation-variable* d-variable))
+    (fold-variates
+     (eliminate-trivial-operations
+      (symbolic-derive
+       (unfold-variates math-expression))))))

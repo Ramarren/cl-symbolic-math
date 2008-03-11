@@ -28,7 +28,7 @@
      (cons _sym-op (mapcar #'fold-variates _args)))
     (_x _x)))
 
-(defun eliminate-trivial-operations (math-tree)
+(defun eliminate-trivial-operations (math-tree &optional (cleanup-p nil))
   (match math-tree
     ;;group identities
     ((+ _x 0)
@@ -49,7 +49,10 @@
     ((* 0 _)
      0)
     ((_sym-op . _args)
-     (cons _sym-op (mapcar #'eliminate-trivial-operations _args)))
+     (where-not cleanup-p)
+     (eliminate-trivial-operations (cons _sym-op
+					 (mapcar #'eliminate-trivial-operations _args))
+				   t))
     (_x _x)))
 
 (defparameter *unwrap-constants-when-performing* nil)

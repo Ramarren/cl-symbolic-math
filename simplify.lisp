@@ -48,6 +48,8 @@
      0)
     ((* 0 _)
      0)
+    ((/ 0 _)
+     0)
     ((_sym-op . _args)
      (where-not cleanup-p)
      (eliminate-trivial-operations (cons _sym-op

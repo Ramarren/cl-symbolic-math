@@ -60,3 +60,19 @@
 (def symbolic-derive (ctg _a)
   (let ((a (symbolic-derive _a)))
     `(* (/ -1 (^ (sin ,_a) 2)) ,a)))
+
+(def symbolic-derive (asin _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ 1 (sqrt (- 1 (^ ,_a 2)))) ,a)))
+
+(def symbolic-derive (acos _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ -1 (sqrt (- 1 (^ ,_a 2)))) ,a)))
+
+(def symbolic-derive (atan _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ 1 (+ 1 (^ ,_a 2))) ,a)))
+
+(def symbolic-derive (actg _a)
+  (let ((a (symbolic-derive _a)))
+    `(* (/ -1 (+ 1 (^ ,_a 2))) ,a)))

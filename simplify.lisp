@@ -52,6 +52,8 @@
      (cons _sym-op (mapcar #'eliminate-trivial-operations _args)))
     (_x _x)))
 
+(defparameter *unwrap-constants-when-performing* nil)
+
 (defun perform-purely-numeric-expressions (math-tree)
   (match math-tree
     ((_sym-op . _args)
@@ -59,6 +61,7 @@
        (if (every #'numberp p-args)
 	   (execute-expression (cons _sym-op p-args))
 	   (eliminate-trivial-operations (cons _sym-op p-args)))))
-    (_x (where (member _x *constants*))
+    (_x (where (and (member _x *constants*)
+		    *unwrap-constants-when-performing*))
 	(execute-expression _x))
     (_x _x)))
